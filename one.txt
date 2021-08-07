@@ -1,0 +1,1 @@
+This piece of software will analyse a singular asset class, and trade based on signals generated from the analysis. It will do this in order to minimise human involvement in trading, and to allow hidden patterns to be utilised to make profit.
