@@ -4,7 +4,10 @@ import yfinance as yf
 import pandas as pd
 from sklearn import preprocessing
 import re
-import tensorflow as tf
+import numpy as np
+from keras.models import Sequential
+from keras.layers import LSTM
+from keras.layers import Dense
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -26,6 +29,7 @@ def increase(current, future):
 
 # data is a pandas dataframe
 # lents default to 30, but can be changed when called
+# returns arrays with values for close volume and increase for all tickers for each time period
 def process(data, lents=30):
     for col in data.columns:
 
@@ -60,8 +64,14 @@ def process(data, lents=30):
         i += 1
     return xseries, yseries
 
-def model(features, labels):
-    hf
+def model(features, labels, valX, valY):
+    model = Sequential()
+    model.add(LSTM(128, activation='relu', return_sequences=True, input_shape=(29, 17)))
+    model.add(LSTM(128, activation='relu'))
+    model.add(Dense(17))
+    model.compile(optimizer='adam', loss='mse', metrics=["accuracy"]) #needs to do stuff properly
+    # fit model
+    model.fit(features, labels, validation_data=(valX, valY), epochs=400) #change later
 
 # collect close prices and volumes for each of ticker into one dataframe
 for ticker in tickers:
@@ -91,4 +101,12 @@ allVal = hist.tail(allLen - split)
 trainX, trainY = process(allTrain)
 valX, valY = process(allVal)
 
-#model(trainX, trainY)
+trainX = np.array(trainX)
+trainX = np.swapaxes(trainX, 1, 2)
+trainY = np.array(trainY)
+
+valX = np.array(valX)
+valX = np.swapaxes(valX, 1, 2)
+valY = np.array(valY)
+
+model(trainX, trainY, valX, valY)
