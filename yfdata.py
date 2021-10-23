@@ -16,9 +16,8 @@ pd.options.mode.chained_assignment = None  # default='warn'
 tickersIndex = ["^NDXT"]
 tickersStocks = ["MSFT", "AAPL", "FB", "AMZN", "GOOGL"]  # will collect data for these tickers
 tickers = tickersIndex + tickersStocks
-print(tickers)
 samplePeriod = "60d"  # length of time historic data gathered over
-sampleInterval = "30m"  # interval historic data gathered at
+sampleInterval = "1h"  # interval historic data gathered at
 predictTime = 1  # how many hours ahead it will predict
 splitPerc = 0.8  # percentage split training to validation data
 
@@ -69,7 +68,7 @@ def process(data, lents=30):
         i += 1
     return xseries, yseries
 
-def model(features, labels, valX, valY):
+def model(features, labels, valX, valY, ticker):
     model = Sequential()
     model.add(LSTM(128, activation='tanh', return_sequences=True, dropout=0.2,  input_shape=(features.shape[1], features.shape[2])))
     model.add(BatchNormalization())
@@ -78,7 +77,7 @@ def model(features, labels, valX, valY):
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mae', metrics=["accuracy"]) #needs to do stuff properly
     # fit model
-    hist = model.fit(features, labels, validation_data=(valX, valY), epochs=100) #change later
+    hist = model.fit(features, labels, validation_data=(valX, valY), epochs=20) #change later
     train_mse = model.evaluate(features, labels, verbose=0)
     test_mse = model.evaluate(valX, valY, verbose=0)
     # plot loss during training
@@ -87,9 +86,15 @@ def model(features, labels, valX, valY):
     pyplot.plot(hist.history['val_loss'], label='test')
     pyplot.legend()
     pyplot.show()
+    model.save(f"{ticker}")
 
 def all_models(features, labels, valX, valY, tickersIndex, tickersStocks):
-
+    for i in range(len(tickersStocks)):
+        featuresTemp = np.concatenate((features[:, :, :(2*len(tickersIndex))], features[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
+        labelsTemp = np.concatenate((labels[:, :(2*len(tickersIndex))], labels[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        valXTemp = np.concatenate((valX[:, :, :(2*len(tickersIndex))], valX[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
+        valYTemp = np.concatenate((valY[:, :(2*len(tickersIndex))], valY[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        model(featuresTemp, labelsTemp, valXTemp, valYTemp, tickersStocks[i])
 
 # collect close prices and volumes for each of ticker into one dataframe
 for ticker in tickers:
@@ -127,5 +132,4 @@ valX = np.array(valX)
 valX = np.swapaxes(valX, 1, 2)
 valY = np.array(valY)
 
-trainY, valY = trainY[:, 4], valY[:, 4]
-model(trainX, trainY, valX, valY)
+all_models(trainX, trainY, valX, valY, tickersIndex, tickersStocks)
