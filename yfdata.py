@@ -8,12 +8,17 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
+from keras.layers import BatchNormalization
+from matplotlib import pyplot
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
-tickers = ["^NDXT", "MSFT", "AAPL", "FB", "AMZN", "GOOGL"]  # will collect data for these tickers
+tickersIndex = ["^NDXT"]
+tickersStocks = ["MSFT", "AAPL", "FB", "AMZN", "GOOGL"]  # will collect data for these tickers
+tickers = tickersIndex + tickersStocks
+print(tickers)
 samplePeriod = "60d"  # length of time historic data gathered over
-sampleInterval = "1h"  # interval historic data gathered at
+sampleInterval = "30m"  # interval historic data gathered at
 predictTime = 1  # how many hours ahead it will predict
 splitPerc = 0.8  # percentage split training to validation data
 
@@ -66,12 +71,25 @@ def process(data, lents=30):
 
 def model(features, labels, valX, valY):
     model = Sequential()
-    model.add(LSTM(128, activation='relu', return_sequences=True, input_shape=(29, 17)))
-    model.add(LSTM(128, activation='relu'))
-    model.add(Dense(17))
-    model.compile(optimizer='adam', loss='mse', metrics=["accuracy"]) #needs to do stuff properly
+    model.add(LSTM(128, activation='tanh', return_sequences=True, dropout=0.2,  input_shape=(features.shape[1], features.shape[2])))
+    model.add(BatchNormalization())
+    model.add(LSTM(128, activation='tanh', dropout=0.1))
+    model.add(BatchNormalization())
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mae', metrics=["accuracy"]) #needs to do stuff properly
     # fit model
-    model.fit(features, labels, validation_data=(valX, valY), epochs=400) #change later
+    hist = model.fit(features, labels, validation_data=(valX, valY), epochs=100) #change later
+    train_mse = model.evaluate(features, labels, verbose=0)
+    test_mse = model.evaluate(valX, valY, verbose=0)
+    # plot loss during training
+    pyplot.title('Loss / Mean Squared Error')
+    pyplot.plot(hist.history['loss'], label='train')
+    pyplot.plot(hist.history['val_loss'], label='test')
+    pyplot.legend()
+    pyplot.show()
+
+def all_models(features, labels, valX, valY, tickersIndex, tickersStocks):
+
 
 # collect close prices and volumes for each of ticker into one dataframe
 for ticker in tickers:
@@ -109,4 +127,5 @@ valX = np.array(valX)
 valX = np.swapaxes(valX, 1, 2)
 valY = np.array(valY)
 
+trainY, valY = trainY[:, 4], valY[:, 4]
 model(trainX, trainY, valX, valY)
