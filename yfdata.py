@@ -68,7 +68,11 @@ def process(data, lents=30):
         i += 1
     return xseries, yseries
 
+#creates a model for each stock ticker, then saves under ticker name
+#currently does not produce a good model.
+#NEEDS WORK DONE. MODEL DOES NOT GENERALISE
 def model(features, labels, valX, valY, ticker):
+    #defining model
     model = Sequential()
     model.add(LSTM(128, activation='tanh', return_sequences=True, dropout=0.2,  input_shape=(features.shape[1], features.shape[2])))
     model.add(BatchNormalization())
@@ -76,24 +80,27 @@ def model(features, labels, valX, valY, ticker):
     model.add(BatchNormalization())
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mae', metrics=["accuracy"]) #needs to do stuff properly
+
     # fit model
-    hist = model.fit(features, labels, validation_data=(valX, valY), epochs=20) #change later
-    train_mse = model.evaluate(features, labels, verbose=0)
-    test_mse = model.evaluate(valX, valY, verbose=0)
+    hist = model.fit(features, labels, validation_data=(valX, valY), epochs=20) #change number of epochs later
+
     # plot loss during training
-    pyplot.title('Loss / Mean Squared Error')
-    pyplot.plot(hist.history['loss'], label='train')
-    pyplot.plot(hist.history['val_loss'], label='test')
-    pyplot.legend()
-    pyplot.show()
+    # pyplot.title('Loss / Mean Squared Error')
+    # pyplot.plot(hist.history['loss'], label='train')
+    # pyplot.plot(hist.history['val_loss'], label='test')
+    # pyplot.legend()
+    # pyplot.show()
     model.save(f"{ticker}")
 
+#separates data and runs model function for each ticker using indexes and particular stock data
 def all_models(features, labels, valX, valY, tickersIndex, tickersStocks):
     for i in range(len(tickersStocks)):
         featuresTemp = np.concatenate((features[:, :, :(2*len(tickersIndex))], features[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
-        labelsTemp = np.concatenate((labels[:, :(2*len(tickersIndex))], labels[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        #labelsTemp = np.concatenate((labels[:, :(2*len(tickersIndex))], labels[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        labelsTemp = labels[:, 2*len(tickersIndex)+3*i+2]
         valXTemp = np.concatenate((valX[:, :, :(2*len(tickersIndex))], valX[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
-        valYTemp = np.concatenate((valY[:, :(2*len(tickersIndex))], valY[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        #valYTemp = np.concatenate((valY[:, :(2*len(tickersIndex))], valY[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
+        valYTemp = valY[:, 2*len(tickersIndex)+3*i+2]
         model(featuresTemp, labelsTemp, valXTemp, valYTemp, tickersStocks[i])
 
 # collect close prices and volumes for each of ticker into one dataframe
