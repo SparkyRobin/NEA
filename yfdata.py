@@ -93,6 +93,7 @@ def model(features, labels, valX, valY, ticker):
     model.save(f"{ticker}")
 
 #separates data and runs model function for each ticker using indexes and particular stock data
+#needs work done here as well.
 def all_models(features, labels, valX, valY, tickersIndex, tickersStocks):
     for i in range(len(tickersStocks)):
         featuresTemp = np.concatenate((features[:, :, :(2*len(tickersIndex))], features[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
@@ -101,7 +102,7 @@ def all_models(features, labels, valX, valY, tickersIndex, tickersStocks):
         valXTemp = np.concatenate((valX[:, :, :(2*len(tickersIndex))], valX[:, :, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=2)
         #valYTemp = np.concatenate((valY[:, :(2*len(tickersIndex))], valY[:, (2*len(tickersIndex)+3*i):(2*len(tickersIndex)+3*(i+1))]), axis=1)
         valYTemp = valY[:, 2*len(tickersIndex)+3*i+2]
-        model(featuresTemp, labelsTemp, valXTemp, valYTemp, tickersStocks[i])
+        model(features, labelsTemp, valX, valYTemp, tickersStocks[i])
 
 # collect close prices and volumes for each of ticker into one dataframe
 for ticker in tickers:
@@ -139,4 +140,13 @@ valX = np.array(valX)
 valX = np.swapaxes(valX, 1, 2)
 valY = np.array(valY)
 
-all_models(trainX, trainY, valX, valY, tickersIndex, tickersStocks)
+#all_models(trainX, trainY, valX, valY, tickersIndex, tickersStocks)
+
+
+z = trainX[:, :, 1:2]
+print(z.shape)
+trainX = np.concatenate((trainX[:, :, 1:2], trainX[:, :, 4:5]), axis=2)
+valX = np.concatenate((valX[:, :, 1:2], valX[:, :, 4:5]), axis=2)
+trainY = trainY[:, 4:5]
+valY = valY[:, 4:5]
+model(trainX, trainY, valX, valY, "MSFT")
