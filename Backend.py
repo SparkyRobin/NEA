@@ -49,6 +49,7 @@ def newAcc(password, apiKey, apiSecret, walletName):
      apiKey = encryptKey(apiKey)
      with open('.env', 'r+') as env:
           env.truncate()
+          load_dotenv()
           env.write(f'EXISTS=true\nHASH={key}\nSALT={str(salt)}\nKEY={str(apiKey)}\nSECRET={apiSecret}\nWALLETSNUM=1\nWALLETSNAME={walletName}\n') # Encrypt api key
      load_dotenv()
      return True

@@ -1,14 +1,19 @@
 import sys
 import Backend as be
+import time
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import Qt
 
+loggedIn = False
 
 class signUp(QWidget):
 
-    def __init__(self):
+    def __init__(self, accExists):
         super().__init__()
+
+        #if accExists == True:
+
         layout = QFormLayout()
         layoutPass = QHBoxLayout()
 
@@ -48,8 +53,13 @@ class signUp(QWidget):
 
     def attempt(self):
 
+        global w
+
         if be.newAcc(str(self.lineEdits['password']), str(self.lineEdits['key']), str(self.lineEdits['secret']), str(self.lineEdits['walletName'])) == True:
             self.worked.setText('Successful')
+            w.layout.setCurrentIndex(1)
+            time.sleep(3)
+            self.close()
         else:
             self.worked.setText('Unsuccessful')
 
@@ -91,8 +101,13 @@ class login(QWidget):
 
     def attempt(self):
 
+        global w
+
         if be.passCheck(str(self.password)) == True:
             self.worked.setText('Successful')
+            w.layout.setCurrentIndex(1)
+            time.sleep(3)
+            self.close()
         else:
             self.worked.setText('Unsuccessful')
 
@@ -101,19 +116,48 @@ class login(QWidget):
 class mainWindow(QMainWindow):
 
     def __init__(self):
+        global loggedIn
+
+        super().__init__()
+
+
+
+        self.resize(1024, 512)
+        self.centre()
+        self.layout = QStackedLayout()
+
+        self.start = startWindow()
+        self.work = workWindow()
+        self.layout.addWidget(self.start)
+        self.layout.addWidget(self.work)
+
+        self.layout.setCurrentIndex(0)
+        widget = QWidget()
+        widget.setLayout(self.layout)
+        self.setCentralWidget(widget)
+
+
+
+    def centre(self):
+        qr = self.frameGeometry()
+        cp = self.screen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+
+class startWindow(QWidget):
+
+    def __init__(self):
         super().__init__()
 
         self.l = None
         self.n = None
 
-        self.resize(1024, 512)
-        self.centre()
-
-
         self.button1 = QPushButton("Existing Account")
         self.button1.clicked.connect(self.login)
         self.button2 = QPushButton("New Account")
         self.button2.clicked.connect(self.newAcc)
+
 
         outLayout = QVBoxLayout()
         layout = QHBoxLayout()
@@ -123,9 +167,9 @@ class mainWindow(QMainWindow):
 
         outLayout.addLayout(layout)
 
-        widget = QWidget()
-        widget.setLayout(outLayout)
-        self.setCentralWidget(widget)
+
+        self.setLayout(outLayout)
+
 
     def login(self, checked):
         if self.l is None:
@@ -138,27 +182,51 @@ class mainWindow(QMainWindow):
 
     def newAcc(self, checked):
 
-        # check if already an account before completing
+        accExists = be.initCheck()
 
         if self.n is None:
-            self.n = signUp()
+            self.n = signUp(accExists)
             self.n.show()
 
         else:
             self.n.close()  # Close window.
             self.n = None
 
-    def centre(self):
-        qr = self.frameGeometry()
-        cp = self.screen().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
 
+
+class workWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        layout = QHBoxLayout()
+        tabWidget = QTabWidget()
+        tabWidget.setMovable(True)
+
+        for i in range(0,5):
+            tabWidget.addTab(walletTab(str(i)), str(i))
+
+        layout.addWidget(tabWidget)
+        self.setLayout(layout)
+
+
+class walletTab(QWidget):
+
+    def __init__(self, name):
+        super().__init__()
+
+        layout = QHBoxLayout()
+        layout.addWidget(QLabel(name))
+        self.setLayout(layout)
+
+
+app = QApplication(sys.argv)
+w = mainWindow()
 
 def main():
 
-    app = QApplication(sys.argv)
-    w = mainWindow()
+    global w, app
+
     w.show()
     app.exec()
 
