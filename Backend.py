@@ -51,6 +51,7 @@ def newAcc(password, apiKey, apiSecret, walletName):
           env.truncate()
           env.write(f'EXISTS=true\nHASH={key}\nSALT={str(salt)}\nKEY={str(apiKey)}\nSECRET={apiSecret}\nWALLETSNUM=1\nWALLETSNAME={walletName}\n') # Encrypt api key
      load_dotenv()
+     return True
 
 
 
@@ -84,4 +85,4 @@ def newWallet(apiKey, apiSecret, walletName):
 
 
 #newAcc('coolpassword', 1234, 5678, 'wallet0')
-print(newWallet(5679, 9101, 'wallet1'))
+#print(newWallet(5679, 9101, 'wallet1'))
