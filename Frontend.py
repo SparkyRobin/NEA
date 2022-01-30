@@ -9,10 +9,10 @@ loggedIn = False
 
 class signUp(QWidget):
 
-    def __init__(self, accExists):
+    def __init__(self):
         super().__init__()
 
-        #if accExists == True:
+        self.setWindowTitle('Sign Up')
 
         layout = QFormLayout()
         layoutPass = QHBoxLayout()
@@ -70,6 +70,8 @@ class login(QWidget):
     def __init__(self):
         super(login, self).__init__()
 
+        self.setWindowTitle('Login')
+
         layout = QFormLayout()
         layoutPass = QHBoxLayout()
 
@@ -120,7 +122,7 @@ class mainWindow(QMainWindow):
 
         super().__init__()
 
-
+        self.setWindowTitle('Sigmund')
 
         self.resize(1024, 512)
         self.centre()
@@ -152,6 +154,7 @@ class startWindow(QWidget):
 
         self.l = None
         self.n = None
+        self.go = True
 
         self.button1 = QPushButton("Existing Account")
         self.button1.clicked.connect(self.login)
@@ -185,7 +188,7 @@ class startWindow(QWidget):
         accExists = be.initCheck()
 
         if self.n is None:
-            self.n = signUp(accExists)
+            self.n = signUp()
             self.n.show()
 
         else:
@@ -215,10 +218,40 @@ class walletTab(QWidget):
     def __init__(self, name):
         super().__init__()
 
-        layout = QHBoxLayout()
-        layout.addWidget(QLabel(name))
+        layout = QVBoxLayout()
+        layout2 = LayToTab(name)
+
+        self.chart = Label(f'chart{name}')
+        splitter1 = QSplitter(Qt.Orientation.Vertical)
+        splitter1.addWidget(layout2)
+        splitter1.addWidget(self.chart)
+        layout.addWidget(splitter1)
         self.setLayout(layout)
 
+
+class LayToTab(QWidget):
+
+    def __init__(self, name):
+        super().__init__()
+
+        layout2 = QHBoxLayout()
+        layout3 = QVBoxLayout()
+
+        layout3.addWidget(Label(f'start/stop{name}'))
+        layout3.addWidget(Label(f'{name} current value'))
+        layout2.addLayout(layout3)
+
+        layout2.addWidget(Label(f'{name} trading history'))
+        layout2.addWidget(Label(f'{name} current positions'))
+
+        self.setLayout(layout2)
+
+
+def Label(content):
+
+    out = QLabel(content)
+    out.setStyleSheet("border: 1px solid black;")
+    return out
 
 app = QApplication(sys.argv)
 w = mainWindow()
