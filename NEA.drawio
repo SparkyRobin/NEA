@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-03-14T00:01:54.811Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.35 Safari/537.36" etag="kNLk6zziEQ9GNDKlB_6_" version="16.6.6" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-14T00:10:24.847Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.35 Safari/537.36" etag="gYtc0AeLNeSWyEfZCAC1" version="16.6.6" type="github">
   <diagram id="_z869Vh-GN76_3m_DNxW" name="Page-1">
-    <mxGraphModel dx="1117" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1043" dy="737" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -481,8 +481,14 @@
         <mxCell id="XvZ4bv-idL50PmNfoQtO-84" value="position = 0" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
           <mxGeometry x="3810" y="350" width="100" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-85" target="XvZ4bv-idL50PmNfoQtO-88">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="XvZ4bv-idL50PmNfoQtO-85" value="data = relevant historical data for tickers[position] requested from the API" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
           <mxGeometry x="3810" y="430" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-98" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-88" target="XvZ4bv-idL50PmNfoQtO-89">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="XvZ4bv-idL50PmNfoQtO-88" value="Train tensorflow LSTM model on data" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="3810" y="535" width="100" height="100" as="geometry" />
