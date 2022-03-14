@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-03-13T23:56:03.299Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.35 Safari/537.36" etag="NWuiifprz7GDXE8DL-JG" version="16.6.6" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-14T00:01:54.811Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.35 Safari/537.36" etag="kNLk6zziEQ9GNDKlB_6_" version="16.6.6" type="github">
   <diagram id="_z869Vh-GN76_3m_DNxW" name="Page-1">
     <mxGraphModel dx="1117" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -456,6 +456,60 @@
         </mxCell>
         <mxCell id="XvZ4bv-idL50PmNfoQtO-65" value="position = position+1" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
           <mxGeometry x="3320" y="450" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-79" target="XvZ4bv-idL50PmNfoQtO-80">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-79" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="30" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-87" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-80" target="XvZ4bv-idL50PmNfoQtO-82">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-80" value="Connect to API" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="120" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-82" target="XvZ4bv-idL50PmNfoQtO-84">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-82" value="tickers = list of traded tickers" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="250" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-83" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-84" target="XvZ4bv-idL50PmNfoQtO-85">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-84" value="position = 0" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="350" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-85" value="data = relevant historical data for tickers[position] requested from the API" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="430" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-88" value="Train tensorflow LSTM model on data" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="535" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-89" target="XvZ4bv-idL50PmNfoQtO-91">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-89" value="Save model as ticker[position] model" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.document2;whiteSpace=wrap;size=0.25;" vertex="1" parent="1">
+          <mxGeometry x="3810" y="655" width="100" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-94" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-90" target="XvZ4bv-idL50PmNfoQtO-85">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-96" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-90" target="XvZ4bv-idL50PmNfoQtO-95">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-90" value="Does position = length(tickers)" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="3980" y="535" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="XvZ4bv-idL50PmNfoQtO-91" target="XvZ4bv-idL50PmNfoQtO-90">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-91" value="position = position+1" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="3980" y="663" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XvZ4bv-idL50PmNfoQtO-95" value="End" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="4120" y="555" width="100" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
