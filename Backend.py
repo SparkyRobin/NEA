@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import hashlib
 import time
+import apiCalls as ap
 
 load_dotenv()
 
@@ -85,5 +86,31 @@ def newWallet(apiKey, apiSecret, walletName):
 
 
 
+def getWalletsNum():
+
+     return int(os.environ.get('WALLETSNUM'))
+
+
+
+def getPositions(api):
+
+     api.positions()
+
+
+
+def initWallets():
+
+     walletApis = []
+     keys = os.environ.get('KEY').split(';')
+     secrets = os.environ.get('SECRET').split(';')
+     for wallet in range(getWalletsNum()):
+          walletApis.append(ap.conApi('PK8RFJYIWKFWKHGXWQNQ', 'ijMCe84JkNIfKDTjPjEl75ytDRe2x1U7TF0rIhlV'))
+     return walletApis
+
+
+
 #newAcc('coolpassword', 1234, 5678, 'wallet0')
 #print(newWallet(5679, 9101, 'wallet1'))
+#getPositions()
+
+#getPositions(initWallets()[0])

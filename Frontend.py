@@ -5,7 +5,9 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import Qt
 
+global wallets
 loggedIn = False
+wallets = be.initWallets()
 
 class signUp(QWidget):
 
@@ -206,7 +208,7 @@ class workWindow(QWidget):
         tabWidget = QTabWidget()
         tabWidget.setMovable(True)
 
-        for i in range(0,5):
+        for i in range(be.getWalletsNum()):
             tabWidget.addTab(walletTab(str(i)), str(i))
 
         layout.addWidget(tabWidget)
@@ -233,7 +235,7 @@ class LayToTab(QWidget):
 
     def __init__(self, name):
         super().__init__()
-
+        global wallets
         layout2 = QHBoxLayout()
         layout3 = QVBoxLayout()
 
@@ -242,15 +244,45 @@ class LayToTab(QWidget):
         layout2.addLayout(layout3)
 
         layout2.addWidget(Label(f'{name} trading history'))
-        layout2.addWidget(Label(f'{name} current positions'))
+        layout2.addWidget(positions(wallets[int(name)]))
 
         self.setLayout(layout2)
 
 
-def Label(content):
+class positions(QWidget):
+
+    def __init__(self, api):
+        super().__init__()
+
+        layout = QVBoxLayout()
+        layout2 = QHBoxLayout()
+        tempList = ['symbol', 'price', 'mkt value', 'qty']
+        for i in range(len(tempList)):
+            if i%2 == 0:
+                layout2.addWidget(Label(tempList[i], bgcolour='#ccffff'))
+            else:
+                layout2.addWidget(Label(tempList[i]))
+        layout.addLayout(layout2)
+        self.positions = api.positions()
+        for ticker in list(self.positions.keys()):
+            layout.addLayout(self.horizontal(ticker, self.positions[ticker]))
+
+        self.setLayout(layout)
+
+
+    def horizontal(self, ticker, info):
+        layout = QHBoxLayout()
+        layout.addWidget(Label(ticker))
+        for i in info:
+            layout.addWidget(QLabel(i))
+        return layout
+
+
+
+def Label(content, border='1px solid black', bgcolour='white'):
 
     out = QLabel(content)
-    out.setStyleSheet("border: 1px solid black;")
+    out.setStyleSheet(f"border: {border};background-color: {bgcolour};")
     return out
 
 app = QApplication(sys.argv)
@@ -259,6 +291,7 @@ w = mainWindow()
 def main():
 
     global w, app
+
 
     w.show()
     app.exec()
